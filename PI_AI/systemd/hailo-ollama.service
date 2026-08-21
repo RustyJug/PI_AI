@@ -1,0 +1,24 @@
+# hailo-ollama.service — user systemd unit
+#
+# Install with (see docs/05-service-hardening.md):
+#   mkdir -p ~/.config/systemd/user
+#   cp systemd/hailo-ollama.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now hailo-ollama
+#   loginctl enable-linger "$USER"
+#
+# If `command -v hailo-ollama` prints a path other than /usr/bin/hailo-ollama,
+# edit ExecStart below to match before installing.
+
+[Unit]
+Description=Hailo-Ollama backend (Hailo-10H GenAI Model Zoo server)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/hailo-ollama
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

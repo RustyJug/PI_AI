@@ -1,0 +1,24 @@
+# docker-compose.yml — alternative to the raw `docker run` in
+# scripts/07_run_open_webui.sh. Equivalent configuration, managed
+# declaratively instead.
+#
+# Usage (on the Raspberry Pi, with Docker installed and hailo-ollama
+# already running on the host at 127.0.0.1:8000):
+#   cd docker
+#   docker compose up -d
+#   docker compose logs -f      # watch startup
+#   docker compose down         # stop and remove (keeps the named volume)
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    network_mode: host
+    restart: always
+    environment:
+      - OLLAMA_BASE_URL=http://127.0.0.1:8000
+    volumes:
+      - open-webui-data:/app/backend/data
+
+volumes:
+  open-webui-data:
